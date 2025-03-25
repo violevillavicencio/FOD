@@ -10,9 +10,11 @@ type
 		readln(nombre_fisico);
 		assign(a, nombre_fisico);
 		rewrite(a);
+  		writeln('ingrese un numero: ');
 		readln(num);
 		while(num <> 30000)do begin 
 			write(a,num);
+   			writeln('ingrese un numero: ');
 			readln(num);
 		end; 
 		close(a);
@@ -23,10 +25,10 @@ type
 		num, menores,total,suma: integer; 
 		promedio: real; 
 	begin 
-		menores:= 0; 
+		menores:= 0; total:= 0; suma:= 0; 
 		reset(a);
 		while(not EOF(a)) do begin
-			readln(a,num);
+			read(a, num);   // para leer un archivo binario uso read(archivo, tipo de dato que guarda)
 			if(num < 1500)then 
 				menores:= menores + 1; 
 			suma:= suma + num; 
@@ -35,7 +37,7 @@ type
 		end; 
 		writeln('la cantidad de numeros menores de 1500 es de: ', menores);
 		promedio:= suma / total; 
-		writeln('el promedio de los numeros ingresados es de: ', promedio); 
+		writeln('el promedio de los numeros ingresados es de: ', promedio:2:0); 
 		close(a);
 	end;
 	
