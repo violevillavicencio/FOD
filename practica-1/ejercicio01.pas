@@ -6,7 +6,7 @@ type
 	var 
 		nombre_fisico: string; num:integer;
 	begin 
-		writeln("ingrese nombre del archivo a crear"); 
+		writeln('ingrese nombre del archivo a crear:'); 
 		readln(nombre_fisico);
 		assign(a, nombre_fisico);
 		rewrite(a);
