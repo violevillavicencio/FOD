@@ -10,9 +10,11 @@ type
 		readln(nombre_fisico);
 		assign(a, nombre_fisico);
 		rewrite(a);
+  		writeln('ingrese un numero: ');
 		readln(num);
 		while(num <> 30000)do begin 
 			write(a,num);
+   			writeln('ingrese un numero: ');
 			readln(num);
 		end; 
 		close(a);
