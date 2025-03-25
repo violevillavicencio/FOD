@@ -95,9 +95,19 @@ var
     a: archivo_empleados; 
     opc: integer; 
 begin 
-    cargarArchivo(a);  
-    listarPorNombre(a); 
-    listarTodos(a); 
-    listarMayores70(a); 
+    repeat 
+        writeln('---------------MENU---------------'); 
+        writeln('1. crear archivo de empleados ');
+        writeln('2. listar por nombre o apellido ');
+        writeln('3. listar todos los empleados'); 
+        writeln('4. listar por mayores de 70' ); 
+        readln(opc);
+        case opc of 
+            0: writeln('saliendo..');
+            1: cargarArchivo(a);  
+            2: listarPorNombre(a); 
+            3: listarTodos(a); 
+            4: listarMayores70(a); 
+        end;
+    until(opc = 0);
 end. 
-    
