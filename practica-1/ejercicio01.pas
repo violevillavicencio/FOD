@@ -11,7 +11,7 @@ type
 		assign(a, nombre_fisico);
 		rewrite(a);
 		readln(num);
-		while ( num <> 30000) do begin 
+		while(num <> 30000)do begin 
 			write(a,num);
 			readln(num);
 		end; 
