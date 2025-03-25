@@ -107,16 +107,15 @@ begin
     writeln('Opcion 4: Exportar el archivo creado a un texto celulares.txt');
     writeln('Opcion 5: Salir del menu y terminar la ejecucion del programa');
     readln(opcion);
-    while(opcion <> 5) do
-        begin
-            case opcion of
-                1: crearArchivo(arc, carga);
-                2: listarCelularesMenosStock(arc);
-                3: listarCelularesMismaDesc(arc);
-                4: exportarTexto(arc, carga);
-            else
-                writeln('La opcion ingresada no corresponde a ninguna de las mostradas en el menu de opciones');
-            end;
+    while(opcion <> 5) do begin
+        case opcion of
+            1: crearArchivo(arc, carga);
+            2: listarCelularesMenosStock(arc);
+            3: listarCelularesMismaDesc(arc);
+            4: exportarTexto(arc, carga);
+        else
+            writeln('La opcion ingresada no corresponde a ninguna de las mostradas en el menu de opciones');
+        end;
             writeln();
             writeln('MENU DE OPCIONES');
             writeln('Opcion 1: Crear un archivo de registros no ordenados de celulares');
@@ -125,5 +124,5 @@ begin
             writeln('Opcion 4: Exportar el archivo creado a un texto celulares.txt');
             writeln('Opcion 5: Salir del menu y terminar la ejecucion del programa');
             readln(opcion);
-        end;
+    end;
 end.
