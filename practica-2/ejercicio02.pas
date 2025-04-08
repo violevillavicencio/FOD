@@ -1,4 +1,4 @@
-program ejercicio2; 
+program ejercicio2;
 const
     valor_alto = 9999;
 type
@@ -25,37 +25,43 @@ type
         else
             v.codigo := valor_alto;
     end;
-    
-    procedure actualizarMaestro(var am: archivo_maestro; var ad: archivo_detalle);
+
+    procedure actualizarMaestro(var mae: archivo_maestro; var det: archivo_detalle);
     var
         p: producto;
         v: venta;
+        codActual, total: integer;
     begin
-        reset(am);
-        reset(ad);
-    
-        leerDetalle(ad, v);
-        while v.codigo <> valor_alto do begin
-            // Busco el producto en el maestro
-            read(am, p);
-            while p.codigo <> v.codigo do
-                read(am, p);
+        reset(mae);
+        reset(det);
+
+        leerDetalle(det, v);
+        read(mae, p); 
+
+        while (v.codigo <> valor_alto) do begin
+            codActual := v.codigo; 
+            total := 0; 
             
-            // Mientras haya ventas del mismo producto
-            while (v.codigo = p.codigo) do begin
-                p.stock_actual := p.stock_actual - v.cantidad;
-                leerDetalle(ad, v);
-            end;
-    
-            // Vuelvo atrás una posición en el maestro y actualizo
-            seek(am, filepos(am) - 1);
-            write(am, p);
+            while (v.codigo = codActual) do begin 
+                total := total + v.cantidad; 
+                leerDetalle(det, v); 
+            end; 
+            
+            while (p.codigo <> codActual) do 
+                read(mae, p); 
+                
+            p.stock_actual := p.stock_actual - total; 
+                
+            seek(mae, filepos(mae) - 1);
+            write(mae, p);
+            
+            read(mae, p); 
         end;
-        
-        close(am);
-        close(ad);
+
+        close(mae);
+        close(det);
     end;
-    
+
     procedure generarStockMinimo(var am: archivo_maestro);
     var
         p: producto;
