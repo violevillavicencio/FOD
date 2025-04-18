@@ -71,14 +71,12 @@ type
       				leer(arch, reg);
     		    end;
     
-    			  total_prov := total_prov + total_loc;
+    			total_prov := total_prov + total_loc;
     		end;
     
     		writeln('Total de Votos Provincia: ', total_prov);
-    		writeln;
     		total_general := total_general + total_prov;
-    	end;
-    
+    	end;   
     	writeln('…………………………………………………………..');
     	writeln('Total General de Votos: ', total_general);
     	close(arch);
