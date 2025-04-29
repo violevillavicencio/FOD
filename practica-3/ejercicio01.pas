@@ -30,10 +30,10 @@ begin
     while(not eof(arc) and (e.numero <> cod)) do
         read(arc, e);
     if(e.numero = cod) then begin
-            seek(arc, filePos(arc)-1);
-            write(arc, ultEmp);
-            seek(arc, fileSize(arc)-1);
-            truncate(arc);
+            seek(arc, filePos(arc)-1);      // Volver a la posición del registro encontrado
+            write(arc, ultEmp);            // Escribir sobre él el último registro
+            seek(arc, fileSize(arc)-1);    // Ir a la última posición (que ahora está duplicada)
+            truncate(arc);                 // Eliminar el último registro
             writeln('Se encontro el empleado con codigo', cod , ' y se realizo la baja correctamente');
     end
     else
