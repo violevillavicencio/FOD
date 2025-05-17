@@ -21,26 +21,16 @@ var
 begin
     reset(maestro);
     reset(codigos_obsoletos);
-    
-    while not eof(codigos_obsoletos) do begin
-        read(codigos_obsoletos, codigo);
-        seek(maestro, 0); // Vuelve al inicio para buscar cada código
 
-        while not eof(maestro) do begin
-            read(maestro, p);
-            if (p.cod = codigo) then begin
-                p.stock := -1; // Marca baja lógica
-                seek(maestro, filepos(maestro) - 1);
-                write(maestro, p);
-                break; // Salta a siguiente código obsoleto
-            end;
-        end;
+    while not eof(maestro) do begin 
+        read(maestro,p);
+        seek(codigos_obsoletos,0); 
         
-    end;
-    
-    close(maestro);
-    close(codigos_obsoletos);
-end;
+        while not eof(codigos_obsoletos) and (seguir) do begin 
+            read(codigos_obsoletos,codigo);
+            if () then begin 
+            
+    end; 
 
 // Baja física: copia solo prendas no borradas a archivo nuevo
 procedure compactarMaestro(var maestro: archivo_prendas);
