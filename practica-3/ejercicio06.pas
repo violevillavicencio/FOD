@@ -18,6 +18,7 @@ procedure realizarBajaLogica(var maestro: archivo_prendas; var codigos_obsoletos
 var
     codigo: integer;
     p: prenda;
+    seguir: boolean; 
 begin
     reset(maestro);
     reset(codigos_obsoletos);
@@ -25,12 +26,20 @@ begin
     while not eof(maestro) do begin 
         read(maestro,p);
         seek(codigos_obsoletos,0); 
-        
+        seguir:= true; 
         while not eof(codigos_obsoletos) and (seguir) do begin 
             read(codigos_obsoletos,codigo);
-            if () then begin 
-            
+            if (codigo = p.cod) then begin 
+                seguir:= false; 
+                p.stock:= -1; 
+                seek(maestro, filepos(maestro)-1);
+                write(maestro,p); 
+            end;
+        end; 
     end; 
+    close(maestro); 
+    close(codigos_obsoletos); 
+end; 
 
 // Baja física: copia solo prendas no borradas a archivo nuevo
 procedure compactarMaestro(var maestro: archivo_prendas);
