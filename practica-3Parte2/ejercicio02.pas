@@ -61,14 +61,12 @@ begin
     reset(txt);
     assign(arc, 'ArchivoMaestro');
     rewrite(arc);
-    while(not eof(txt)) do
-    begin
-            with l do
-                begin
-                    readln(txt, codigo, mesa, cant);
-                    write(arc, l);
-                end;
+    while(not eof(txt)) do begin
+        with l do begin
+            readln(txt, codigo, mesa, cant);
+            write(arc, l);
         end;
+    end;
     writeln('Archivo maestro generado');
     close(arc);
     close(txt);
@@ -80,11 +78,10 @@ var
 begin
     reset(arc);
     writeln('Codigo de Localidad          Total de Votos');
-    while(not eof(arc)) do
-        begin
-            read(arc, l);
-            writeln(l.codigo, '             ', l.cant);
-        end
+    while(not eof(arc)) do begin
+        read(arc, l);
+        writeln(l.codigo, '             ', l.cant);
+    end
     writeln('Total General de Votos: ', cantTotal);
     close(arc);
 end;
