@@ -14,10 +14,6 @@ b. ¿Qué cambios realizaría en el procedimiento del punto anterior si se sabe 
 cada registro del archivo maestro puede ser actualizado por 0 o 1 registro del
 archivo detalle?}
 program ejercicio1;
-
-const 
-    valoralto = 9999;
-
 type
     producto = record
         codigo: integer;
@@ -26,14 +22,13 @@ type
         stock: integer;
         stockMin: integer;
     end;
-
     venta = record
         codigo: integer;
         cant: integer;
     end;
-
     maestro = file of producto;
     detalle = file of venta;
+
 
 { Caso a: cada producto puede ser actualizado por 0, 1 o más registros del detalle }
 procedure actualizarA(var mae: maestro; var det: detalle);
@@ -44,22 +39,18 @@ var
 begin
     reset(mae);
     reset(det);
-    while not eof(mae) do
-    begin
+    while not eof(mae) do begin
         read(mae, p);
         cantActual := 0;
 
-        while not eof(det) do
-        begin
+        while not eof(det) do begin
             read(det, v);
-            if v.codigo = p.codigo then
+            if (v.codigo = p.codigo) then
                 cantActual := cantActual + v.cant;
         end;
-
         seek(det, 0);  // Volver al principio para el próximo producto
-
-        if cantActual > 0 then
-        begin
+        
+        if (cantActual > 0) then begin
             p.stock := p.stock - cantActual;
             seek(mae, filepos(mae) - 1);
             write(mae, p);
@@ -79,18 +70,14 @@ begin
     reset(mae);
     reset(det);
 
-    while not eof(det) do
-    begin
+    while not eof(det) do begin
         read(det, v);
-
         seek(mae, 0);
         encontrado := false;
 
-        while (not eof(mae)) and (not encontrado) do
-        begin
+        while (not eof(mae)) and (not encontrado) do begin
             read(mae, p);
-            if p.codigo = v.codigo then
-            begin
+            if (p.codigo = v.codigo) then begin
                 p.stock := p.stock - v.cant;
                 seek(mae, filepos(mae) - 1);
                 write(mae, p);
@@ -98,69 +85,8 @@ begin
             end;
         end;
     end;
-
     close(mae);
     close(det);
-end;
-
-procedure crearMaestro(var mae: maestro; var carga: text);
-var
-    nombre: string;
-    p: producto;
-begin
-    reset(carga);
-    nombre := 'ArchivoMaestro';
-    assign(mae, nombre);
-    rewrite(mae);
-    while not eof(carga) do
-    begin
-        with p do
-        begin
-            readln(carga, codigo, precio, stock, stockMin, nombre);
-            write(mae, p);
-        end;
-    end;
-    writeln('Archivo binario maestro creado');
-    close(mae);
-    close(carga);
-end;
-
-procedure crearDetalle(var det: detalle; var carga: text);
-var
-    nombre: string;
-    v: venta;
-begin
-    reset(carga);
-    nombre := 'ArchivoDetalle';
-    assign(det, nombre);
-    rewrite(det);
-    while not eof(carga) do
-    begin
-        with v do
-        begin
-            readln(carga, codigo, cant);
-            write(det, v);
-        end;
-    end;
-    writeln('Archivo binario detalle creado');
-    close(det);
-    close(carga);
-end;
-
-procedure imprimirMaestro(var mae: maestro);
-var
-    p: producto;
-begin
-    reset(mae);
-    while not eof(mae) do
-    begin
-        read(mae, p);
-        with p do
-            writeln('Codigo=', codigo, ' Precio=', precio:0:2, 
-                    ' StockActual=', stock, ' StockMin=', stockMin, 
-                    ' Nombre=', nombre);
-    end;
-    close(mae);
 end;
 
 var
@@ -170,15 +96,6 @@ var
 begin
     assign(cargaMae, 'maestro.txt');
     assign(cargaDet, 'detalle.txt');
-
-    crearMaestro(mae, cargaMae);
-    crearDetalle(det, cargaDet);
-
-    writeln('Actualizando archivo maestro...');
-    // Llamá a una de estas dos opciones según el escenario:
     actualizarA(mae, det);   // Caso general (0, 1 o más ventas por producto)
-    // actualizarB(mae, det); // Caso optimizado (máximo 1 venta por producto)
-
-    writeln('Contenido actualizado del archivo maestro:');
-    imprimirMaestro(mae);
+    actualizarB(mae, det); // Caso máximo 1 venta por producto
 end.
