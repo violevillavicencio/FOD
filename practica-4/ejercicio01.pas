@@ -27,7 +27,7 @@ necesarias en el peor de los casos?}
 // inciso a 
 program ejercicio01; 
 const
-    M = 4; // orden del arbol, lo defini en 4 para que ejecute. 
+    M = ; // orden del arbol
 type
     alumno = record
         nombre: string;
