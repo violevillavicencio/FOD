@@ -20,27 +20,7 @@ que ese elemento.
 
 ## 📝 Declaración del Árbol en el type 
 
-program declaracion;
-const
-    M = ; // **orden del arbol**
-type
-    alumno = record
-        nombre: string;
-        apellido: string;
-        dni: integer;
-        legajo: integer;
-        anioIngreso: integer;
-    end;
-    // **nodo del árbol B**
-    nodo = record
-        cant_datos: integer;  // **cantidad actual de claves**
-        datos: array[1..M-1] of alumno;   // **claves del nodo (hasta M-1)**
-        hijos: array[1..M] of integer;  // **posiciones (NRR) de los hijos**
-    end;
-    // **archivo físico que representa el árbol B**
-    arbolB = file of nodo;
-var
-    archivoDatos: arbolB;
+![image](https://github.com/user-attachments/assets/f8875860-7f4b-4bae-857f-ee8a36fbc9a7)
     
 ---
 
