@@ -31,6 +31,7 @@ Un **Árbol B+** es una mejora del árbol B que:
 
 ## 📝 Declaración del Árbol en el type
 
+![image](https://github.com/user-attachments/assets/12efffcb-d048-44b3-80d8-ea4f9d376803)
 
 ---
 
