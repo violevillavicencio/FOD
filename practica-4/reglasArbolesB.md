@@ -6,14 +6,15 @@ Este documento resume las reglas y pasos a seguir para realizar **altas (inserci
 
 ## 🌳 Propiedades del Árbol B de orden M
 
-- Cada nodo puede tener **como máximo M hijos** (y M−1 claves).
+- Cada nodo puede tener **como máximo M hijos**.
 - La **raíz**:
   - Si es única, puede no tener hijos.
   - Si tiene hijos, debe tener **al menos 2**.
-- Todos los nodos (salvo la raíz) deben tener al menos **⌈M/2⌉ − 1 claves**.
+- Todos los nodos (salvo la raíz) tienen como minimo **⌈M/2⌉ − 1 claves** y como maximo **M-1 claves**.
 - Todos los nodos hoja están al mismo nivel (el árbol está balanceado).
-- Las claves dentro de cada nodo están **ordenadas**.
-- Las claves separan rangos de los subárboles hijos.
+- Cada nodo tiene sus elementos **ordenados por clave**, todos los elementos en el subarbol izquierdo son
+menores o iguales que dicho elemento, mientras que todos los elementos en el subarbol derecho son mayores
+que ese elemento. 
 
 ---
 
@@ -29,13 +30,14 @@ Este documento resume las reglas y pasos a seguir para realizar **altas (inserci
 
 ### ⚠️ Tratamiento del Overflow:
 
-1. **Dividir el nodo** en dos mitades:
-   - La **clave del medio** sube al nodo padre.
-   - Las mitades quedan en dos nodos separados.
-2. Insertar la clave media en el padre:
+1. Se **crea** un nuevo nodo.
+2. La primera mitad de las claves se mantiene en el nodo con overflow. 
+3. La segunda mitad de las claves se traslada al nuevo nodo.
+4. La menor de las claves de la segunda mitad se promociona al nodo padre. 
    - Si hay lugar → insertar y ajustar enlaces.
    - Si no → se genera overflow en el padre → repetir el proceso.
-3. Si la **raíz** se divide → se crea una nueva raíz → el árbol crece en altura.
+
+!! Si la **raíz** se divide → se crea una nueva raíz → el árbol crece en altura.
 
 ---
 
@@ -55,11 +57,13 @@ Este documento resume las reglas y pasos a seguir para realizar **altas (inserci
 ### ⚠️ Tratamiento del Underflow:
 
 1. **Intentar redistribuir** con un hermano adyacente (si tiene más de ⌈M/2⌉ − 1 claves):
+   - Se trata de dejar cada nodo lo mas equitativamente cargado posible. 
    - Ajustar claves del nodo y del padre.
-2. Si no es posible redistribuir, **fusionar** con un hermano:
+3. Si no es posible redistribuir, **fusionar** con un hermano:
    - Combinar ambos nodos + clave del padre.
    - El padre pierde una clave → puede propagar el underflow hacia arriba.
-   - Si la raíz queda sin claves → eliminarla → el árbol baja de altura.
+
+!! Si la **raíz** queda sin claves → eliminarla → el árbol baja de altura.
 
 ---
 
