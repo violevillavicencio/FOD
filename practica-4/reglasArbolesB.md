@@ -20,7 +20,7 @@ que ese elemento.
 
 ## 📝 Declaración del Árbol en el type 
 
-program declaracion; 
+program declaracion;
 const
     M = ; // **orden del arbol**
 type
