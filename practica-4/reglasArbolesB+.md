@@ -31,7 +31,7 @@ Un **Árbol B+** es una mejora del árbol B que:
 
 ## 📝 Declaración del Árbol en el type
 
-![image](https://github.com/user-attachments/assets/12efffcb-d048-44b3-80d8-ea4f9d376803)
+![image](https://github.com/user-attachments/assets/d500a4a2-5e8b-43d9-a3e5-42a79902ad4b)
 
 ---
 
@@ -83,6 +83,7 @@ Un **Árbol B+** es una mejora del árbol B que:
 #### 🔁 Redistribución
 
 - Se intenta tomar claves del hermano adyacente.
+- Se trata de dejar cada nodo lo mas equitativamente cargado posible.
 - Se ajustan claves guía del padre si es necesario.
 
 #### 🔗 Fusión (si no se puede redistribuir)
