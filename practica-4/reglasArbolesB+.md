@@ -19,13 +19,18 @@ Un **Árbol B+** es una mejora del árbol B que:
 
 ## ✅ Propiedades de los Árboles B+
 
-- Cada nodo (página) puede tener **como máximo M hijos**.
+- Cada nodo puede tener **como máximo M hijos**.
 - Los nodos internos (excepto la raíz) tienen entre ⌈M/2⌉ y M hijos.
 - La **raíz** tiene al menos 2 hijos (si no es hoja).
 - **Todas las hojas están al mismo nivel**.
 - Un nodo interno con **K descendientes tiene K−1 claves**.
 - **Los nodos hoja contienen todos los datos** y están **enlazados** secuencialmente.
 - **Los nodos no terminales no contienen datos**, solo claves guía y punteros.
+
+---
+
+## 📝 Declaración del Árbol en el type
+
 
 ---
 
