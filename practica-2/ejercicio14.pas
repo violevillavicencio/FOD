@@ -15,112 +15,109 @@ NOTA: El archivo maestro y los archivos detalles sólo pueden recorrerse una vez
 }
 program ejercicio14;
 const
-	valorAlto = 'zzz'; 
+    valorAlto = 'zzz'; 
 type
-	str30 = string[30];
-	strFechaHora = string[12]; // formato 'AAAAMMDDHHMM' → ordenable como string
+    str30 = string[30];
+    strFechaHora = string[12]; // AAAAMMDDHHMM
 
-	reg_maestro = record
-		destino: str30;
-		fechaHora: strFechaHora;
-		asientos_disponibles: integer;
-	end;
+    reg_maestro = record
+        destino: str30;
+        fechaHora: strFechaHora;
+        asientos_disponibles: integer;
+    end;
 
-	reg_detalle = record
-		destino: str30;
-		fechaHora: strFechaHora;
-		asientos_comprados: integer;
-	end;
+    reg_detalle = record
+        destino: str30;
+        fechaHora: strFechaHora;
+        asientos_comprados: integer;
+    end;
 
-	maestro = file of reg_maestro;
-	detalle = file of reg_detalle;
-    
-    procedure leer(var d: detalle; var r: reg_detalle);
-    begin
-    	if not eof(d) then
-    		read(d, r)
-    	else
-    		r.destino := valorAlto;
-    end;
-    
-    procedure leerMaestro(var m: maestro; var r: reg_maestro);
-    begin
-    	if not eof(m) then
-    		read(m, r)
-    	else
-    		r.destino := valorAlto;
-    end;
-    
-    procedure minimo(var d1, d2: detalle; var r1, r2, min: reg_detalle);
-    begin
-    	if (r1.destino < r2.destino) or
-    	   ((r1.destino = r2.destino) and (r1.fechaHora <= r2.fechaHora)) then begin
-    		min := r1;
-    		leer(d1, r1);
-    	end 
-    	else begin
-    		min := r2;
-    		leer(d2, r2);
-    	end;
-    end;
-    
-    procedure actualizarMaestro(var mae: maestro; var d1, d2: detalle; var umbral:integer);
-    var
-    	r1, r2, min: reg_detalle;
-    	regm: reg_maestro;
-    	totalComprado: integer;
-    begin
-    	reset(mae);
-    	reset(d1); reset(d2);
-    
-    	leer(d1, r1);
-    	leer(d2, r2);
-    	minimo(d1, d2, r1, r2, min);
-    
-    	leerMaestro(mae, regm);
-    
-    	while min.destino <> valorAlto do begin
-    		// Avanzar maestro hasta encontrar vuelo que coincide
-    		while (regm.destino <> valorAlto) and
-    		      ((regm.destino < min.destino) or
-    		      ((regm.destino = min.destino) and (regm.fechaHora < min.fechaHora))) do
-    			leerMaestro(mae, regm);
-    
-    		// Si coincide con algún vuelo, actualizar
-    		if (regm.destino = min.destino) and (regm.fechaHora = min.fechaHora) then begin
-    			totalComprado := 0;
-    
-    			while (min.destino = regm.destino) and (min.fechaHora = regm.fechaHora) do begin
-    				totalComprado := totalComprado + min.asientos_comprados;
-    				minimo(d1, d2, r1, r2, min);
-    			end;
-                 // Mostrar si cumple condición --- deberia ser una lista pero solo informo
-			    if regm.asientos_disponibles < umbral then
-				    writeln('Destino: ', regm.destino, ' | FechaHora: ', regm.fechaHora, ' | Asientos: ', regm.asientos_disponibles);
-    			
-    			
-    			regm.asientos_disponibles := regm.asientos_disponibles - totalComprado;
-    			seek(mae, filepos(mae) - 1);
-    			write(mae, regm);
-    
-    			leerMaestro(mae, regm); // avanzar
-    		end
-    		else 
-    			minimo(d1, d2, r1, r2, min);
-    	end;
-    
-    	close(mae);
-    	close(d1); close(d2);
-    end;
-    
-var
-	mae: maestro;
-	d1, d2: detalle;
-	umbral: integer; 
+    maestro = file of reg_maestro;
+    detalle = file of reg_detalle;
+
+procedure leerDetalle(var d: detalle; var r: reg_detalle);
 begin
-	assign(mae, 'maestro.dat');
-	assign(d1, 'detalle1.dat');
-	assign(d2, 'detalle2.dat');
-  read(umbral); 
-	actualizarMaestro(mae, d1, d2, umbral);
+    if not eof(d) then
+        read(d, r)
+    else
+        r.destino := valorAlto;
+end;
+
+procedure leerMaestro(var m: maestro; var r: reg_maestro);
+begin
+    if not eof(m) then
+        read(m, r)
+    else
+        r.destino := valorAlto;
+end;
+
+procedure minimo(var d1, d2: detalle; var r1, r2, min: reg_detalle);
+begin
+    if (r1.destino < r2.destino) or 
+       ((r1.destino = r2.destino) and (r1.fechaHora <= r2.fechaHora)) then
+    begin
+        min := r1;
+        leerDetalle(d1, r1);
+    end
+    else begin
+        min := r2;
+        leerDetalle(d2, r2);
+    end;
+end;
+
+procedure actualizarMaestro(var mae: maestro; var d1, d2: detalle; umbral: integer);
+var
+    r1, r2, min: reg_detalle;
+    regm: reg_maestro;
+    clave_destino: str30;
+    clave_fechaHora: strFechaHora;
+    totalComprado: integer;
+begin
+    reset(mae);
+    reset(d1); reset(d2);
+
+    leerDetalle(d1, r1);
+    leerDetalle(d2, r2);
+    minimo(d1, d2, r1, r2, min);
+
+    leerMaestro(mae, regm);
+
+    while (regm.destino <> valorAlto) do begin
+        // Coinciden clave del maestro y detalle
+        while (min.destino <> valorAlto) and 
+              (regm.destino = min.destino) and 
+              (regm.fechaHora = min.fechaHora) do
+        begin
+            regm.asientos_disponibles := regm.asientos_disponibles - min.asientos_comprados;
+            minimo(d1, d2, r1, r2, min); // Siguiente mínimo
+        end;
+
+        // Actualizo maestro
+        seek(mae, filepos(mae)-1);
+        write(mae, regm);
+
+        // Informar si está por debajo del umbral
+        if regm.asientos_disponibles < umbral then
+            writeln('Destino: ', regm.destino, ' | FechaHora: ', regm.fechaHora, ' | Asientos: ', regm.asientos_disponibles);
+
+        leerMaestro(mae, regm);
+    end;
+
+    close(mae);
+    close(d1); close(d2);
+end;
+
+var
+    mae: maestro;
+    d1, d2: detalle;
+    umbral: integer;
+begin
+    assign(mae, 'maestro.dat');
+    assign(d1, 'detalle1.dat');
+    assign(d2, 'detalle2.dat');
+
+    write('Ingrese umbral de asientos disponibles: ');
+    readln(umbral);
+
+    actualizarMaestro(mae, d1, d2, umbral);
 end.
