@@ -1,4 +1,3 @@
-
 # 📌 3. Sinónimo, Colisión y Desborde en Hashing
 
 En el contexto del uso de funciones de dispersión para almacenamiento en archivos o estructuras como tablas hash, es importante entender los siguientes conceptos:
