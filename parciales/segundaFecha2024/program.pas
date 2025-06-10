@@ -64,11 +64,13 @@ begin
             total_positivos := total_positivos + min.casos_positivos;
             minimo(dets, regs, min);
         end;
-
-        rmae.casos_positivos := rmae.casos_positivos + total_positivos;
-        seek(mae, filepos(mae) - 1);
-        write(mae, rmae);
-
+        
+        if (total_positivos > 0) then begin
+            rmae.casos_positivos := rmae.casos_positivos + total_positivos;
+            seek(mae, filepos(mae) - 1);
+            write(mae, rmae);
+        end; 
+        
         if (rmae.casos_positivos > 15) then
             writeln('Municipio código: ', rmae.cod_municipio, ' - Nombre: ', rmae.nom_municipio, ' supera los 15 casos positivos');
     end;
